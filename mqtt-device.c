@@ -1,33 +1,4 @@
 /*
- * Copyright (c) 2010, Swedish Institute of Computer Science.
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the name of the Institute nor the names of its contributors
- *    may be used to endorse or promote products derived from this software
- *    without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE INSTITUTE AND CONTRIBUTORS ``AS IS'' AND
- * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE INSTITUTE OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
- * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- *
- */
-
 /**
  * \file
  *         Light and temperatur sensor web demo
@@ -111,51 +82,6 @@ PROCESS_THREAD(web_sense_process, ev, data)
 
 /*---------------------------------------------------------------------------*/
 /*
- * Copyright (c) 2014, Texas Instruments Incorporated - http://www.ti.com/
- * Copyright (c) 2015, Nordic Semiconductor
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. Neither the name of the copyright holder nor the names of its
- *    contributors may be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE
- * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
- * OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-/*---------------------------------------------------------------------------*/
-/**
- * \addtogroup nrf52dk-examples Demo projects for nRF52 DK
- * @{
- *
- * \defgroup nrf52dk-mqtt-demo nRF52 DK MQTT Demo Project
- *
- * Demonstrates MQTT functionality. Works with mosquitto.
- * @{
- *
- * \file
- * An MQTT example for the nrf52dk platform
- */
-/*---------------------------------------------------------------------------*/
-
-/*
  * IBM server: quickstart.messaging.internetofthings.ibmcloud.com
  * (184.172.124.189) mapped in an NAT64 (prefix 64:ff9b::/96) IPv6 address
  * Note: If not able to connect; lookup the IP address again as it may change.
@@ -167,8 +93,8 @@ PROCESS_THREAD(web_sense_process, ev, data)
 static const char *broker_ip = MQTT_DEMO_BROKER_IP_ADDR;
 #define DEFAULT_ORG_ID              "mqtt-demo"
 #else
-static const char *broker_ip = "0064:ff9b:0000:0000:0000:0000:b8ac:7cbd";
-#define DEFAULT_ORG_ID              "quickstart"
+static const char *broker_ip = "k29znw.messaging.internetofthings.ibmcloud.com";
+#define DEFAULT_ORG_ID              "k29znw"
 #endif
 /*---------------------------------------------------------------------------*/
 
@@ -228,8 +154,8 @@ static uint8_t state;
 #define NO_NET_LED_DURATION         (NET_CONNECT_PERIODIC >> 1)
 /*---------------------------------------------------------------------------*/
 /* Default configuration values */
-#define DEFAULT_TYPE_ID             "nrf52dk"
-#define DEFAULT_AUTH_TOKEN          "AUTHZ"
+#define DEFAULT_TYPE_ID             "GateWayType"
+#define DEFAULT_AUTH_TOKEN          "123456789"
 #define DEFAULT_EVENT_TYPE_ID       "status"
 #define DEFAULT_SUBSCRIBE_CMD_TYPE  "+"
 #define DEFAULT_BROKER_PORT         1883
@@ -265,14 +191,6 @@ typedef struct mqtt_client_config {
 /*---------------------------------------------------------------------------*/
 #define STATUS_LED LEDS_GREEN
 /*---------------------------------------------------------------------------*/
-/*
- * Buffers for Client ID and Topic.
- * Make sure they are large enough to hold the entire respective string
- *
- * d:quickstart:status:EUI64 is 32 bytes long
- * iot-2/evt/status/fmt/json is 25 bytes
- * We also need space for the null termination
- */
 #define BUFFER_SIZE 64
 static char client_id[BUFFER_SIZE];
 static char pub_topic[BUFFER_SIZE];
@@ -463,13 +381,6 @@ construct_sub_topic(void)
 static int
 construct_client_id(void)
 {
-  /*
-  int len = snprintf(client_id, BUFFER_SIZE, "d:%s:%s:%02x%02x%02x%02x%02x%02x",
-                     conf.org_id, conf.type_id,
-                     linkaddr_node_addr.u8[0], linkaddr_node_addr.u8[1],
-                     linkaddr_node_addr.u8[2], linkaddr_node_addr.u8[5],
-                     linkaddr_node_addr.u8[6], linkaddr_node_addr.u8[7]);
-  */
 
   // ClientID is differentiated by final segment of IPv6 address
   int len = snprintf(client_id, BUFFER_SIZE, "sensor%d", linkaddr_node_addr.u8[7]);

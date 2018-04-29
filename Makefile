@@ -1,6 +1,6 @@
 all: mqtt-device
 
-CONTIKI= home/user/contiki
+CONTIKI= /home/user/contiki
 
 APPS += mqtt
 SMALL = 1
